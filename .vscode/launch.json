@@ -35,7 +35,6 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome",
-            "preLaunchTask": "angular-build",
             "url": "http://localhost:4200",
             "webRoot": "${workspaceFolder}/recipe"
         }

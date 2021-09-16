@@ -1,12 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace backend.Service
 {
     public interface ITokenGenerator
     {
+        public string TokenExpiry { get; set; }
+
         string GetJWTToken(string userId);
     }
 }

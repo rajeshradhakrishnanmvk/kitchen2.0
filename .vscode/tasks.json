@@ -37,24 +37,6 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "angular-build",
-            "type": "shell",
-            "command": "ng",
-            "args": [
-                "build",
-                "--watch"
-            ],
-            "group": "build",
-            "isBackground": true,
-            "problemMatcher": "$tsc"
-        },
-        {
-            "label": "angular-serve",
-            "type": "npm",
-            "script": "serve --env=local",
-            "problemMatcher": []
         }
     ]
 }
