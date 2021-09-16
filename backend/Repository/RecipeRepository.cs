@@ -1,4 +1,4 @@
-using System;
+using MongoDB.Bson;
 using System.Linq;
 using MongoDB.Driver;
 using System.Collections.Generic;
@@ -15,10 +15,16 @@ namespace backend.Repository
         }
         public UserRecipes CreateRecipe(UserRecipes repiceUser)
         {
+            UserRecipes userRecipes =  context.Recipes.Find(nu => nu.UserId == repiceUser.UserId).ToList().FirstOrDefault();
+            if(repiceUser != null)
+            {
+                var deleteFilter = Builders<UserRecipes>.Filter.Eq("UserId", repiceUser.UserId);
+                context.Recipes.DeleteOne(deleteFilter);
+            }
+            
             context.Recipes.InsertOne(repiceUser);
             return repiceUser;
         }
-
         public bool DeleteRecipe(string userId, int repiceId)
         {
             UserRecipes repiceUser =  context.Recipes.Find(nu => nu.UserId == userId).ToList().FirstOrDefault();
