@@ -34,7 +34,9 @@ namespace backend.Controllers
              //this._logger.LogInformation("Register", user.UserId);
             try
             {
-                return Created("", this.service.RegisterUser(user));
+                bool registered = this.service.RegisterUser(user);
+                var authResponse = UserResponseData(user.UserId, user.Email, registered);
+                return Created("",authResponse);
 
             }
             catch (UserNotCreatedException )
@@ -58,14 +60,31 @@ namespace backend.Controllers
             {
                 //_logger.LogInformation("User {ID} trying to Log", user.UserId);
                 User userLogged = this.service.LoginUser(user.UserId, user.Password);
-                string value = tokenGenerator.GetJWTToken(user.UserId);
-                return Ok(value);
+                //string value = tokenGenerator.GetJWTToken(user.UserId);
+                return Ok(UserResponseData(user.UserId, user.Email, true));
 
             }
             catch (UserNotFoundException )
             {
                 return new NotFoundResult();
             }
+        }
+
+        private object UserResponseData(string userId, string email, bool registered)
+        {
+            // idToken: string;
+            // email: string;
+            // expiresIn: string
+            // refreshToken: string;
+            // localId: string;
+            // registered?: boolean;
+
+            string value = tokenGenerator.GetJWTToken(userId);
+            return new { idToken = value, 
+                         email = email,
+                         expiresIn=tokenGenerator.TokenExpiry,
+                         localId = userId,
+                         registered= registered};
         }
     }
 }
