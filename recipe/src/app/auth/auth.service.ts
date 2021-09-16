@@ -26,10 +26,15 @@ export class AuthService {
     constructor(private http: HttpClient,
         private router: Router) { }
     signup(email: string, password: string) {
-        return this.http.post<AuthResponseData>('<url>', {
-            email: email,
+        return this.http.post<AuthResponseData>('http://localhost:8081/auth/register', {
+            userId: email,
             password: password,
-            returnSecureToken: true
+            email: email,
+            firstName: "Test",
+            lastName: "User",
+            role: "Admin",
+            addedDate: new Date()
+
         }).pipe(
             catchError(this.handleError),
             tap(resData => {
@@ -39,10 +44,14 @@ export class AuthService {
     }
 
     login(email: string, password: string) {
-        return this.http.post<AuthResponseData>('<url>', {
-            email: email,
+        return this.http.post<AuthResponseData>('http://localhost:8081/auth/login', {
+            userId: email,
             password: password,
-            returnSecureToken: true
+            email: email,
+            firstName: "Test",
+            lastName: "User",
+            role: "Admin",
+            addedDate: new Date()
         }).pipe(
             catchError(this.handleError),
             tap(resData => {
