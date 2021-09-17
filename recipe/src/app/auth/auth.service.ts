@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Subject, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
+import { environment } from "../../environments/environment";
 import { User } from "./user.model";
 
 export interface AuthResponseData {
@@ -20,13 +21,14 @@ export class AuthService {
     //user = new Subject<User>();
     user = new BehaviorSubject<User>(null);
     private tokenExpirationTimer: any;
-    //"http://localhost:8081/auth/login
-    //curl -X POST "http://localhost:8081/auth/login" -H  "accept: */*" -H  "Content-Type: application/json" -d "{\"userId\":\"ram\",\"password\":\"123456\",\"firstName\":\"rajesh\",\"lastName\":\"radhakrishnan\",\"role\":\"admin\",\"addedDate\":\"2021-09-15T13:34:47.370Z\"}"
-    //curl -X POST "http://localhost:8081/auth/register" -H  "accept: */*" -H  "Content-Type: application/json" -d "{\"userId\":\"ram\",\"password\":\"123456\",\"firstName\":\"rajesh\",\"lastName\":\"radhakrishnan\",\"role\":\"admin\",\"addedDate\":\"2021-09-15T13:34:47.370Z\"}"
+
+    private serviceurl = environment.backendService;
+
     constructor(private http: HttpClient,
         private router: Router) { }
     signup(email: string, password: string) {
-        return this.http.post<AuthResponseData>('http://localhost:8081/auth/register', {
+        const url = this. serviceurl + 'auth/register';
+        return this.http.post<AuthResponseData>(url, {
             userId: email,
             password: password,
             email: email,
@@ -44,7 +46,8 @@ export class AuthService {
     }
 
     login(email: string, password: string) {
-        return this.http.post<AuthResponseData>('http://localhost:8081/auth/login', {
+        const url = this. serviceurl + 'auth/login';
+        return this.http.post<AuthResponseData>(url, {
             userId: email,
             password: password,
             email: email,
