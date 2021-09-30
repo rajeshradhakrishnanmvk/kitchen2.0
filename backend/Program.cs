@@ -23,8 +23,8 @@ namespace backend
                     webBuilder.UseStartup<Startup>()
                     .UseKestrel(options =>
                         {
-                            //options.ListenAnyIP(Int32.Parse(System.Environment.GetEnvironmentVariable("PORT")));
-                            options.ListenAnyIP(8081);
+                            options.ListenAnyIP(Int32.Parse(System.Environment.GetEnvironmentVariable("PORT")));
+                            //options.ListenAnyIP(80);
                         });
                 });
     }

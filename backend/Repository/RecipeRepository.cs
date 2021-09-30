@@ -1,4 +1,4 @@
-using System;
+using MongoDB.Bson;
 using System.Linq;
 using MongoDB.Driver;
 using System.Collections.Generic;
@@ -13,22 +13,28 @@ namespace backend.Repository
         {
             context = dbContext;
         }
-        public UserRecipes CreateRecipe(UserRecipes noteUser)
+        public UserRecipes CreateRecipe(UserRecipes repiceUser)
         {
-            context.Recipes.InsertOne(noteUser);
-            return noteUser;
-        }
-
-        public bool DeleteRecipe(string userId, int noteId)
-        {
-            UserRecipes noteUser =  context.Recipes.Find(nu => nu.UserId == userId).ToList().FirstOrDefault();
-            if(noteUser != null)
+            UserRecipes userRecipes =  context.Recipes.Find(nu => nu.UserId == repiceUser.UserId).ToList().FirstOrDefault();
+            if(repiceUser != null)
             {
-                Recipe dbRecipe = noteUser.Recipes.Find(n => n.Id == noteId);
+                var deleteFilter = Builders<UserRecipes>.Filter.Eq("UserId", repiceUser.UserId);
+                context.Recipes.DeleteOne(deleteFilter);
+            }
+            
+            context.Recipes.InsertOne(repiceUser);
+            return repiceUser;
+        }
+        public bool DeleteRecipe(string userId, int repiceId)
+        {
+            UserRecipes repiceUser =  context.Recipes.Find(nu => nu.UserId == userId).ToList().FirstOrDefault();
+            if(repiceUser != null)
+            {
+                Recipe dbRecipe = repiceUser.Recipes.Find(n => n.Id == repiceId);
                 if (dbRecipe != null)
                 {
-                    noteUser.Recipes.Remove(dbRecipe);
-                    context.Recipes.ReplaceOne(nu => nu.UserId == userId, noteUser);
+                    repiceUser.Recipes.Remove(dbRecipe);
+                    context.Recipes.ReplaceOne(nu => nu.UserId == userId, repiceUser);
                 }
             }
 
@@ -38,52 +44,52 @@ namespace backend.Repository
 
         public List<Recipe> FindByUserId(string userId)
         {
-            UserRecipes noteUser = context.Recipes.Find(nu => nu.UserId == userId).ToList().FirstOrDefault();
+            UserRecipes repiceUser = context.Recipes.Find(nu => nu.UserId == userId).ToList().FirstOrDefault();
             List<Recipe> ret = new List<Recipe>();
-            if (noteUser != null)
+            if (repiceUser != null)
             {
-                ret = noteUser.Recipes;
+                ret = repiceUser.Recipes;
             }
                 return ret;
         }
 
-        public UserRecipes UpdateRecipe(int noteId, string userId, Recipe note)
+        public UserRecipes UpdateRecipe(int repiceId, string userId, Recipe repice)
         {
-            UserRecipes noteUser = context.Recipes.Find(nu => nu.UserId == userId).ToList().FirstOrDefault();
-            if (noteUser == null)
+            UserRecipes repiceUser = context.Recipes.Find(nu => nu.UserId == userId).ToList().FirstOrDefault();
+            if (repiceUser == null)
             {
-                noteUser = new UserRecipes()
+                repiceUser = new UserRecipes()
                 {
                     UserId = userId,
                     Recipes = new List<Recipe>()
                 };
-                note.Id = noteId;
-                noteUser.Recipes.Add(note);
-                this.CreateRecipe(noteUser);
+                repice.Id = repiceId;
+                repiceUser.Recipes.Add(repice);
+                this.CreateRecipe(repiceUser);
             }
             else
             {
-                Recipe dbRecipe = noteUser.Recipes.Find(n => n.Id == note.Id);
+                Recipe dbRecipe = repiceUser.Recipes.Find(n => n.Id == repice.Id);
                 if (dbRecipe != null)
                 {
-                    noteUser.Recipes.Remove(dbRecipe);
+                    repiceUser.Recipes.Remove(dbRecipe);
 
                 }
                 else
                 {
                     //Auto increment PK
                     //Get MAX
-                    var lastRecipe = (Recipe)(from nt in noteUser.Recipes
+                    var lastRecipe = (Recipe)(from nt in repiceUser.Recipes
                                           orderby nt.Id descending
                                           select nt).ToList().FirstOrDefault();
                     //If Present increment by 1
-                    note.Id = lastRecipe != null ? lastRecipe.Id + 1 : 100;
+                    repice.Id = lastRecipe != null ? lastRecipe.Id + 1 : 100;
                 }
 
-                noteUser.Recipes.Add(note);
-                context.Recipes.ReplaceOne(nu => nu.UserId == userId, noteUser);
+                repiceUser.Recipes.Add(repice);
+                context.Recipes.ReplaceOne(nu => nu.UserId == userId, repiceUser);
             }
-            return noteUser;
+            return repiceUser;
         }
     }
 }

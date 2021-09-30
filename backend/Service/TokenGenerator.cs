@@ -1,17 +1,17 @@
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
 
 namespace backend.Service
 {
     public class TokenGenerator : ITokenGenerator
     {
+        public string TokenExpiry { get; set; }
         public string GetJWTToken(string userId)
         {
             var claims = new[]
@@ -31,11 +31,17 @@ namespace backend.Service
                 signingCredentials: creds
                 );
 
-            var response = new
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token)
-            };
-            return JsonConvert.SerializeObject(response);
+            // var response = new
+            // {
+            //     token = new JwtSecurityTokenHandler().WriteToken(token)
+            // };
+            var response = new JwtSecurityTokenHandler().WriteToken(token);
+            TokenExpiry =  (token.ValidTo - token.ValidFrom).TotalSeconds.ToString();
+            string jsonText = JsonConvert.SerializeObject(response);
+            string regexPattern = "\""; 
+            string ret = Regex.Replace(jsonText, regexPattern, "");
+            return  ret;
+
         }
     }
 }

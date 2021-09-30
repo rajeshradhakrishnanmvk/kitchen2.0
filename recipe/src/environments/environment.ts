@@ -4,13 +4,8 @@
 
 export const environment = {
   production: false,
-  authority: 'http://localhost:5000',
-  clientId: 'AngularClient',
-  redirectUri: 'http://localhost:4200',
-  responseType: 'id_token token',
-  scope: 'openid bookservice chapterservice',
-  bookService: 'http://localhost:5002',
-  chapterService: 'http://localhost:5001'
+  backendService: 'http://localhost:8081/'
+
 };
 
 /*

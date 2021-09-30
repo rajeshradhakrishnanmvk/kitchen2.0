@@ -40,10 +40,11 @@ namespace backend.Controllers
 
         // POST api/<controller>
         [HttpPost("{userId}")]
-        public IActionResult Post(string userId,[FromBody]Recipe Recipe)
+        public IActionResult Post(string userId,[FromBody]UserRecipes Recipe)
         {
-            UserRecipes RecipeResult = service.AddRecipe(userId, Recipe);
-            return Ok(RecipeResult.Recipes);
+            UserRecipes userRecipes = service.CreateRecipe(Recipe);
+
+            return Ok(userRecipes);
         }
 
         // PUT api/<controller>/5

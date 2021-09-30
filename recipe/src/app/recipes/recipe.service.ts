@@ -51,6 +51,15 @@ export class RecipeService {
         this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients))
     }
     addRecipe(recipe: Recipe) {
+        recipe.id =0;
+        recipe.createdBy = "Test User";
+        recipe.creationDate = new Date()
+        for( let ingredient of recipe.ingredients){
+            ingredient.id = 0;
+            ingredient.createdBy = "Test User";
+            ingredient.creationDate = new Date();
+        }
+        
         this.recipes.push(recipe);
         this.recipesChanged.next(this.recipes.slice());
     }
