@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 
+
 namespace backend.Service
 {
     public class TokenGenerator : ITokenGenerator
@@ -40,6 +41,7 @@ namespace backend.Service
             string regexPattern = "\""; 
             string ret = Regex.Replace(jsonText, regexPattern, "");
             return  ret;
+
         }
     }
 }
