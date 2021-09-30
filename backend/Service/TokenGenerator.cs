@@ -4,6 +4,8 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
+
 
 namespace backend.Service
 {
@@ -35,7 +37,11 @@ namespace backend.Service
             // };
             var response = new JwtSecurityTokenHandler().WriteToken(token);
             TokenExpiry =  (token.ValidTo - token.ValidFrom).TotalSeconds.ToString();
-            return JsonConvert.SerializeObject(response);
+            string jsonText = JsonConvert.SerializeObject(response);
+            string regexPattern = "\""; 
+            string ret = Regex.Replace(jsonText, regexPattern, "");
+            return  ret;
+
         }
     }
 }

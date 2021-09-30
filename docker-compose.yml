@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+    web0:
+        image: recipe
+        container_name: recipe01
+        build:
+          context: ./recipe
+          dockerfile: Dockerfile
+        ports:
+            - "4200:80"
+        environment: 
+            - PORT=80
+        volumes:
+            - ./vsdbg:/remote_debugger/vsdbg
+        restart: on-failure
+        depends_on: 
+            - web1
+    web1:
+        image: backend
+        container_name: backend01
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        ports:
+            - "8081:80"
+        volumes:
+            - ./vsdbg:/remote_debugger/vsdbg
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Docker
+            - PORT=80
+        restart: on-failure
+        depends_on: 
+            - db
+            - mssql
+    db:
+        image: "mongo"
+        ports:
+            - "27017:27017"
+        volumes:
+            - ./mg/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro
+            - mongodata:/data/db
+    mssql:
+        image: "mcr.microsoft.com/mssql/server:2017-CU8-ubuntu"
+        ports:
+            - "1433:1433"
+        volumes:
+            - mssqldata:/var/opt/mssql
+        environment:
+            ACCEPT_EULA: Y
+            SA_PASSWORD: pass@123
+volumes:
+    mongodata:
+    mssqldata:
