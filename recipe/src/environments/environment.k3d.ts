@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backendService: 'http://server-cluster-ip-service:5000/'
+  backendService: 'http://backend.k3d.localhost:8080/'
 };
