@@ -10,9 +10,8 @@ namespace backend.Models
 
         public RecipeContext(IConfiguration configuration)
         {
-            //client = new MongoClient(configuration.GetSection("MongoDB:ConnectionString").Value);
             //client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
-             client = new MongoClient(configuration.GetSection("MongoDB:DockerConnectionString").Value);
+             client = new MongoClient(configuration.GetSection("MongoDB:ConnectionString").Value);
             database = client.GetDatabase(configuration.GetSection("MongoDB:Database").Value);
         }
 

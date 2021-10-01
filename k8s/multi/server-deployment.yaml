@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec: 
+      containers:
+        - name: server
+          image: 15091983/backend:v.1.0
+          ports:
+            - containerPort: 5000
+          env:
+            - name: "ASPNETCORE_ENVIRONMENT"
+              value: "k3d"
+            - name: "PORT"
+              value: "5000"
