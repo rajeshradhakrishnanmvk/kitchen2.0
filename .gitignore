@@ -1,0 +1,5 @@
+recipe/dist/*
+recipe/node_modules/*
+recipe/node_modules/@angular-devkit/build-angular/package.json
+mg/*
+vsdbg/*

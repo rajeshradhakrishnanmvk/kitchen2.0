@@ -115,7 +115,7 @@ docker run -it --network some-network --rm mongo mongo --host some-mongo test
 docker run --rm -d -p 27017:27017 -v /home/rajesh/recipe:/data/db mongo 
 
 {
-  "userId": "1001",
+  "userId": "r@gmail.com",
   "password": "123456",
   "email": "r@gmail.com",
   "firstName": "rajesh",
@@ -126,24 +126,29 @@ docker run --rm -d -p 27017:27017 -v /home/rajesh/recipe:/data/db mongo
 
 curl -X POST "http://localhost:8081/api/Recipes/1001" -H  "accept: */*" -H  "Content-Type: application/json" -d "{\"id\":0,\"name\":\"Test\",\"description\":\"Test Recipe\",\"imagePath\":\"//image//test\",\"ingredient\":[{\"id\":0,\"name\":\"Cheese\",\"amount\":10,\"createdBy\":\"Rajesh\",\"creationDate\":\"2021-09-16T05:06:10.078Z\"}],\"createdBy\":\"Rajesh\",\"creationDate\":\"2021-09-16T05:06:10.078Z\"}"
 
+
 {
-  "id": 0,
-  "name": "Test",
-  "description": "Test Recipe",
-  "imagePath": "//image//test",
-  "ingredient": [
+  "userId": "r@gmail.com",
+  "recipes": [
     {
       "id": 0,
-      "name": "Cheese",
-      "amount": 10,
+      "name": "Big Fat Burger!",
+      "description": "Test BurGer King",
+      "imagePath": "https://upload.wikimedia.org/wikipedia/commons/b/be/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg",
+      "ingredients": [
+        {
+          "id": 0,
+          "name": "Cheese",
+          "amount": 10,
+          "createdBy": "Rajesh",
+          "creationDate": "2021-10-05T10:26:08.658Z"
+        }
+      ],
       "createdBy": "Rajesh",
-      "creationDate": "2021-09-16T05:06:10.078Z"
+      "creationDate": "2021-10-05T10:26:08.658Z"
     }
-  ],
-  "createdBy": "Rajesh",
-  "creationDate": "2021-09-16T05:06:10.078Z"
+  ]
 }
-
 
 ## Docker
 
@@ -169,6 +174,7 @@ docker push 15091983/recipe:v.1.0
 
 https://www.suse.com/c/introduction-k3d-run-k3s-docker-src/
 https://en.sokube.ch/post/k3s-k3d-k8s-a-new-perfect-match-for-dev-and-test-1
+https://qiita.com/dennistanaka/items/78585b6bda374be98aad
 
 wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -220,3 +226,11 @@ kubectl apply -f k8s/multi
 http://recipe.k3d.localhost:8080/
 
 ## Recipe
+
+{"t":{"$date":"2021-10-05T09:01:50.373+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"10.42.0.102:32890","uuid":"4f84311d-edc4-4a30-be00-b44c8b91f3d2","connectionId":5,"connectionCount":5}}
+{"t":{"$date":"2021-10-05T09:01:50.375+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn5","msg":"client metadata","attr":{"remote":"10.42.0.102:32890","client":"conn5","doc":{"driver":{"name":"mongo-csharp-driver","version":"2.13.1.0"},"os":{"type":"Linux","name":"Linux 5.10.16.3-microsoft-standard-WSL2 #1 SMP Fri Apr 2 22:23:49 UTC 2021","architecture":"x86_64","version":"5.10.16.3-microsoft-standard-WSL2"},"platform":".NET 5.0.10"}}}
+{"t":{"$date":"2021-10-05T09:01:50.431+00:00"},"s":"I",  "c":"STORAGE",  "id":20320,   "ctx":"conn5","msg":"createCollection","attr":{"namespace":"RecipesDB.Recipes","uuidDisposition":"generated","uuid":{"uuid":{"$uuid":"e4fe7796-d3ef-404c-8eb4-bcf029863b88"}},"options":{}}}
+{"t":{"$date":"2021-10-05T09:01:50.460+00:00"},"s":"I",  "c":"INDEX",    "id":20345,   "ctx":"conn5","msg":"Index build: done building","attr":{"buildUUID":null,"namespace":"RecipesDB.Recipes","index":"_id_","commitTimestamp":null}}
+{"t":{"$date":"2021-10-05T09:02:40.219+00:00"},"s":"I",  "c":"STORAGE",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":"[1633424560:219668][1:0x7fc7af6a5700], WT_SESSION.checkpoint: [WT_VERB_CHECKPOINT_PROGRESS] saving checkpoint snapshot min: 46, snapshot max: 46 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 1"}}
+
+kubectl exec -it mongo-deployment-69686f8bf7-pb4xw sh
