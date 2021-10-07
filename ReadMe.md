@@ -163,8 +163,8 @@ docker tag local-image:tagname new-repo:tagname
 docker push new-repo:tagname
 
 ```
-docker tag recipe:latest 15091983/recipe:v.1.0
-docker push 15091983/recipe:v.1.0
+docker tag recipe:latest <yourdockerid>/recipe:v.1.0
+docker push <yourdockerid>/recipe:v.1.0
 ```
 
 
@@ -225,20 +225,20 @@ docker build -f Dockerfile.k3d -t recipe .
 **Tag the image**
 
 ```
-docker tag recipe:latest 15091983/recipe:v.1.0
+docker tag recipe:latest <yourdockerid>/recipe:v.1.0
 ```
 **Import the image into the k3s cluster**
 
 ```
-k3d image import 15091983/recipe:v.1.0 -c elite-dev
+k3d image import <yourdockerid>/recipe:v.1.0 -c elite-dev
 ```
 
 Step 4: Build & Deploy Database images into the cluster.
 
 ```
-docker tag backend:latest 15091983/backend:v.1.0
+docker tag backend:latest <yourdockerid>/backend:v.1.0
 
-k3d image import 15091983/backend:v.1.0 -c elite-dev
+k3d image import <yourdockerid>/backend:v.1.0 -c elite-dev
 
 docker tag mcr.microsoft.com/mssql/server:2017-CU8-ubuntu mssql:v.1.0
 
