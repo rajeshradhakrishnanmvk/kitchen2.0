@@ -2,7 +2,7 @@
 
 Kitchen 2.0 is a Full Stack Application, which is used to create recipes & a shopping cart for buying ingredients.
 
-![Design](https://github.com/rajeshradhakrishnanmvk/kitchen2.0/blob/feature101-frontend/docs/Kitchen2.0.png)
+![Design](https://github.com/rajeshradhakrishnanmvk/kitchen2.0/blob/59b0ddccbe6812503545263beb086392af62afc6/docs/Kitchen2.0.png)
 
 # Courses
 
