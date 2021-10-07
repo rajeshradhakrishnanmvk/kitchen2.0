@@ -1,7 +1,8 @@
-using MongoDB.Bson;
+using System;
 using System.Linq;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using backend.Models;
 
 namespace backend.Repository
@@ -9,20 +10,39 @@ namespace backend.Repository
     public class RecipeRepository : IRecipeRepository
     {
         private readonly IRecipeContext context;
-        public RecipeRepository(IRecipeContext dbContext)
+        private readonly ILogger _logger;
+        public RecipeRepository(IRecipeContext dbContext,ILogger<RecipeContext> logger)
         {
             context = dbContext;
+            this._logger = logger;
         }
         public UserRecipes CreateRecipe(UserRecipes repiceUser)
         {
-            UserRecipes userRecipes =  context.Recipes.Find(nu => nu.UserId == repiceUser.UserId).ToList().FirstOrDefault();
-            if(repiceUser != null)
+            try
             {
-                var deleteFilter = Builders<UserRecipes>.Filter.Eq("UserId", repiceUser.UserId);
-                context.Recipes.DeleteOne(deleteFilter);
+                UserRecipes userRecipes =  context.Recipes.Find(nu => nu.UserId == repiceUser.UserId).ToList().FirstOrDefault();
+                this._logger.LogInformation("CreateRecipe START");
+                this._logger.LogInformation(repiceUser.Recipes[0].Name);
+                
+                if(userRecipes != null)
+                {
+                    this._logger.LogInformation("CreateRecipe Delete START");
+                    this._logger.LogInformation(userRecipes.Recipes[0].Name);
+                    var deleteFilter = Builders<UserRecipes>.Filter.Eq("UserId", repiceUser.UserId);
+                    context.Recipes.DeleteOne(deleteFilter);
+                    this._logger.LogInformation("CreateRecipe Delete END");
+                }
+                
+                context.Recipes.InsertOne(repiceUser);
+                this._logger.LogInformation("CreateRecipe END");
             }
-            
-            context.Recipes.InsertOne(repiceUser);
+            catch(Exception oex){
+                this._logger.LogError("Error in Create  {0} ", oex.Message);
+                if(oex.InnerException != null){
+                    this._logger.LogError("Inner Exception {0}", oex.InnerException.Message);
+                }
+            }
+
             return repiceUser;
         }
         public bool DeleteRecipe(string userId, int repiceId)
