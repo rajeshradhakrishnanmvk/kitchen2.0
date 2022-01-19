@@ -80,6 +80,18 @@ cd kitchen2.0
 dotnet new web
 dotnet build
 dotnet test
+
+mkdir consumer
+dotnet new console
+dotnet add package Confluent.Kafka --version 1.8.2
+
+https://github.com/elastic/elasticsearch-net
+
+mkdir esclient
+dotnet new web
+dotnet add package NEST --version 7.15.2
+
+https://docs.confluent.io/clients-confluent-kafka-dotnet/current/overview.html
 ```
 
 Reference:
@@ -391,3 +403,39 @@ https://docs.microsoft.com/en-us/sql/tools/visual-studio-code/sql-server-develop
 https://www.thecodebuzz.com/jwt-authorization-token-swagger-open-api-asp-net-core
 
 https://www.c-sharpcorner.com/article/authentication-and-authorization-in-asp-net-5-with-jwt-and-swagger/
+
+## Selenium Hub
++---+----+
+Image|Command
++----+---+
+
+Selenium hub,	docker pull selenium/hub
+Selenium firefox node,	docker pull selenium/node-firefox
+Selenium chrome node,	docker pull selenium/node-chrome
+Selenium firefox debug,	docker pull selenium/node-firefox-debug
+Selenium chrome debug,	docker pull selenium/node-chrome-debug
+
+docker run -d -p 4444:4444 –name selenium-hub selenium/hub
+
+Command to run chrome node from Docker: 
+docker run -d –link selenium-hub:hub selenium/node-chrome
+
+Command to run firefox node from Docker: 
+docker run -d –link selenium-hub:hub selenium/node-firefox
+
+# Kafka
+
+## go inside broker container
+docker exec -it b8e163422dfc  bash 
+## LIST ALL KAKFA TOPICS
+kafka-topics --list --bootstrap-server localhost:9092  
+## CREATE NEW KAKFA TOPIC
+kafka-console-producer --bootstrap-server  localhost:9092 --topic TestTopic
+## READ VALUE FROM KAFKA TOPIC
+kafka-console-consumer --bootstrap-server localhost:9092 --topic TestTopic --from-beginning 
+
+dotnet run subscribe localhost:8083 schema-changes.inventory
+
+# Elastic Search
+
+dotnet add package NEST --version 7.15.2

@@ -1,0 +1,107 @@
+version: '2'
+services:
+  zookeeper:
+    image: debezium/zookeeper:${DEBEZIUM_VERSION}
+    ports:
+     - 2181:2181
+     - 2888:2888
+     - 3888:3888
+    networks:
+     - dbzui-network
+  kafka:
+    image: debezium/kafka:${DEBEZIUM_VERSION}
+    ports:
+     - 9092:9092
+    links:
+     - zookeeper
+    environment:
+     - ZOOKEEPER_CONNECT=zookeeper:2181
+    networks:
+     - dbzui-network
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    ports:
+     - 1433:1433
+    environment:
+     - ACCEPT_EULA=Y
+     - MSSQL_PID=Standard
+     - SA_PASSWORD=Password!
+     - MSSQL_AGENT_ENABLED=true
+    networks:
+     - dbzui-network
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
+    ports:
+     - 9200:9200
+     - 9300:9300
+    environment:
+     - discovery.type=single-node
+     - http.host=0.0.0.0
+     - transport.host=127.0.0.1
+     - xpack.security.enabled=false
+    networks:
+     - dbzui-network
+  connect:
+    image: debezium/connect:${DEBEZIUM_VERSION}
+    ports:
+     - 8083:8083
+    links:
+     - kafka
+     - sqlserver
+     - elastic
+    environment:
+     - BOOTSTRAP_SERVERS=kafka:9092
+     - GROUP_ID=1
+     - CONFIG_STORAGE_TOPIC=my_connect_configs
+     - OFFSET_STORAGE_TOPIC=my_connect_offsets
+     - STATUS_STORAGE_TOPIC=my_connect_statuses
+    networks:
+     - dbzui-network
+  dbzui-backend:
+      image: debezium/debezium-ui
+      ports:
+        - "8080:8080"
+      environment:
+        KAFKA_CONNECT_URI: http://connect:8083
+      depends_on:
+        - connect
+      networks:
+        - dbzui-network
+  kafka-backend:
+      image: provectuslabs/kafka-ui:latest 
+      ports:
+        - 8084:8080
+      environment:
+        - KAFKA_CLUSTERS_0_NAME=kafka
+        - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      links:
+        - kafka
+      depends_on:
+        - kafka
+      networks:
+        - dbzui-network
+  zookeeper-backend:
+      image: tobilg/zookeeper-webui
+      ports:
+        - 8085:8080
+      environment:
+        - ZK_DEFAULT_NODE=zookeeper:2181
+      links:
+        - zookeeper
+      depends_on:
+        - zookeeper
+      networks:
+        - dbzui-network
+  mellos-consumer:
+      image: mellos-consumer:latest
+      container_name: mellos-consumer01
+      build:
+          context: ../consumer
+          dockerfile: Dockerfile
+      links:
+          - kafka
+      networks:
+        - dbzui-network
+networks:
+  dbzui-network:
+    external: false

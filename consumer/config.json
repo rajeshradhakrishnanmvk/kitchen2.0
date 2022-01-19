@@ -1,0 +1,7 @@
+{
+    "group.id": "test-consumer-group",
+    "bootstrap.servers": "localhost:8083",
+    "auto.commit.interval.ms": "5000",
+    "auto.offset.reset": "smallest",
+    "topic": "server1.dbo.customers"
+}
