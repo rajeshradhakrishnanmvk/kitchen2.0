@@ -27,7 +27,7 @@ export class AuthService {
     constructor(private http: HttpClient,
         private router: Router) { }
     signup(email: string, password: string) {
-        const url = this. serviceurl + 'auth/register';
+        const url = this.serviceurl + 'auth/register';
         return this.http.post<AuthResponseData>(url, {
             userId: email,
             password: password,
@@ -46,7 +46,7 @@ export class AuthService {
     }
 
     login(email: string, password: string) {
-        const url = this. serviceurl + 'auth/login';
+        const url = this.serviceurl + 'auth/login';
         return this.http.post<AuthResponseData>(url, {
             userId: email,
             password: password,
