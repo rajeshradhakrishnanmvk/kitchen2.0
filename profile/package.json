@@ -1,0 +1,27 @@
+{
+  "name": "profile",
+  "version": "1.0.0",
+  "description": "Experiments with failures v1.0",
+  "main": "index.js",
+  "scripts": {
+    "compile:sass": "sass scss:public/assets/css"
+  },
+  "keywords": [
+    "Bootstrap",
+    "bootstrap-v5",
+    "saas",
+    "learn-bootstrap",
+    "learn-sass"
+  ],
+  "author": "Rajesh Radhakrishnan",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.48.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "autoprefixer": "^10.4.2",
+    "bootstrap": "^5.1.3",
+    "postcss-cli": "^9.1.0"
+  }
+}
