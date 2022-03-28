@@ -54,7 +54,7 @@ class Classify(Resource):
         return status
 
 
-api.add_resource(Classify, '/api/get-mlnews-classify')
+api.add_resource(Classify, '/api/get-classify')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5069))
