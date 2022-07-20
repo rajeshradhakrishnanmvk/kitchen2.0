@@ -1,0 +1,26 @@
+{
+    "manifest_version": 2,
+    "name": "Our RSS Feed's extension",
+    "description": "Show the medium rss feed",
+    "version": "1.0.0",
+    "browser_action": {
+        "default_popup": "popup.html",
+        "default_title": "Open the extension"
+    },
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    },
+    "icons": {
+        "16": "img/logo-16.png",
+        "48": "img/logo-48.png",
+        "128": "img/logo.png"
+    },
+    "permissions": [
+        "storage",
+        "alarms",
+        "https://www.deshabhimani.com/"
+    ]
+}

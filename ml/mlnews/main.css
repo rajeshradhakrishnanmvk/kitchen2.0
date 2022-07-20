@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,600,700');
+
+* {
+    box-sizing: border-box;
+}
+body
+{
+    width: 400px;
+    margin: 0;
+    font-family: 'Roboto', 'Open Sans', 'Helvetica Neue', 'sans-serif';
+}
+main
+{
+    padding: 15px;
+}
+h1
+{
+    font-size: 20px;
+    margin: 5px 0px;
+}
+span
+{
+    font-size: 14px;
+}
+a
+{
+    text-decoration: none;
+    position: relative;
+    display: block;
+    box-shadow: inset 0px -2px 0 rgba(0,0,0,.1);
+    padding: 15px 0px;
+    cursor: pointer;
+}
+a:last-child
+{
+    box-shadow: none;
+}
+a, a:hover, a:visited
+{
+    color: rgba(0,0,0,1);
+}
+span
+{
+    text-transform: none;
+    text-decoration: underline;
+}
